@@ -7,7 +7,7 @@ import {PageNotFoundModule} from './page-not-found/page-not-found.module';
 const routes: Routes = [
   {
     path: 'registration',
-    component: LoginComponent
+    loadChildren: './registration/registration.module#RegistrationModule'
   },
   {
     path: 'dashboard',

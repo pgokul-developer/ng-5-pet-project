@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {User} from '../../../shared/model/user';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +10,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  @Output() loggedIn = new EventEmitter<User>();
+  form: FormGroup;
 
-  ngOnInit() {
+  constructor(private fb: FormBuilder,
+              private router: Router) {
   }
 
+  ngOnInit() {
+    this.form = this.fb.group({
+      email: ['', [
+        Validators.required,
+        Validators.pattern('[^ @]*@[^ @]*')
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8)
+      ]]
+    });
+  }
+
+  login() {
+    console.log(`Login ${this.form.value}`);
+    if (this.form.valid) {
+      this.loggedIn.emit(
+        new User(
+          this.form.value.email,
+          this.form.value.password
+        )
+      );
+      this.router.navigateByUrl('/dashboard');
+    }
+  }
 }
