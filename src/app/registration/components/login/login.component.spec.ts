@@ -3,12 +3,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {User} from '../../../shared/model/user';
+import {Router} from '@angular/router';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let email;
   let password;
+
+  const routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
 /*  beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -31,7 +34,10 @@ describe('LoginComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, FormsModule],
-      declarations: [ LoginComponent ]
+      declarations: [ LoginComponent ],
+      providers: [
+        { provide: Router, useValue: routerSpy }
+      ]
     });
 
     // create component and fixture to test
